@@ -1,5 +1,5 @@
 USE sistema_bancario;
---criando procedures para clientes pessoa fisica 
+
 DROP PROCEDURE IF EXISTS clientePF_cadastrar;
 
 DELIMITER $$
@@ -35,7 +35,7 @@ END $$
 
 DELIMITER ;
 
---criando procedures para alterar clientes pessoa fisica
+
 DROP PROCEDURE IF EXISTS clientePF_alterar;
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePF_alterar (
@@ -76,21 +76,29 @@ BEGIN
     END$$
     DELIMITER ;
 
---criando procedures para deletar clientes pessoa fisica
+
    
    DROP PROCEDURE IF EXISTS clientePF_deletar;
     DELIMITER $$
-CREATE PROCEDURE IF NOT EXISTS clientePF_deletar (
-    IN p_id INT
-)
-BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  DROP PROCEDURE IF EXISTS clientePF_deletar;
+     DELIMITER $$       
+    CREATE PROCEDURE IF NOT EXISTS clientePF_deletar (
+        IN p_id INT
+    )
     BEGIN
-        ROLLBACK;
-    END;
-    DELIMITER ;
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+            ROLLBACK;
+        END;
+        DELETE FROM Clientes_PF
+        WHERE Clientes_PF.`id` = p_id;
+        
+        COMMIT;
+        END $$
+        DELIMITER ;
 
----criando procedures para consultar clientes pessoa fisica por nome
+
+
 
     DROP PROCEDURE IF EXISTS clientePF_consultarpornome;
 
@@ -104,7 +112,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando proceures para consultar por razao social 
+
 
     DROP PROCEDURE IF EXISTS clientePF_consultarporrazaosocial;
 
@@ -120,7 +128,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
-----criando procedures para consultar por cpf
+
 
 DROP PROCEDURE IF EXISTS clientePF_consultarporcpf; 
 DELIMITER $$
@@ -135,7 +143,6 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedures para consultar por id 
 DROP PROCEDURE IF EXISTS clientePF_consultarporid; 
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePF_consultarporid (
@@ -149,7 +156,6 @@ BEGIN
 END $$  
 DELIMITER ;
 
---consultar por email 
 DROP PROCEDURE IF EXISTS clientePF_consultarporemail; 
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePF_consultarporemail (
@@ -182,7 +188,7 @@ DELIMITER ;
 
 
 
----criando procedures para clientes pessoa juridica
+
 DROP PROCEDURE IF EXISTS clientePJ_cadastrar;
 
 DELIMITER $$
@@ -209,11 +215,10 @@ BEGIN
     INSERT INTO Clientes_PJ (cliente_id, cnpj, razao_social)
     VALUES (@last_id, p_cnpj, p_razao_social);
     COMMIT;
-END $$
+END 
 
 DELIMITER ;
 
---criando procedures para alterar clientes pessoa juridica
 DROP PROCEDURE IF EXISTS clientePJ_alterar;
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePJ_alterar (
@@ -246,10 +251,10 @@ BEGIN
         razao_social = p_razao_social
     WHERE cliente_id = p_id;
     COMMIT;
-END$$
+END
 DELIMITER ;
 
---criando procedures para deletar clientes pessoa juridica
+
 
     DROP PROCEDURE IF EXISTS clientePJ_deletar;
      DELIMITER $$       
@@ -261,14 +266,20 @@ DELIMITER ;
         BEGIN
             ROLLBACK;
         END;
+        DELETE FROM Clientes_PJ
+        WHERE Clientes_PJ.`id` = p_id;
+        
+        COMMIT;
+        END $$
         DELIMITER ;
 
---criando procedures para consultar clientes pessoa juridica por nome 
+
 
     DROP PROCEDURE IF EXISTS clientePJ_consultarpornome;
 
     DELIMITER $$
-CREATE PROCEDURE IF NOT EXISTS clientePJ_consultarpornome (
+
+    CREATE PROCEDURE IF NOT EXISTS clientePJ_consultarpornome (
     IN p_nome VARCHAR(100)  
 )
 BEGIN
@@ -277,7 +288,7 @@ BEGIN
 END $$  
 DELIMITER ; 
 
---criando procedures para consultar clientes pessoa juridica por razao social 
+
 
     DROP PROCEDURE IF EXISTS clientePJ_consultarporrazaosocial;
 
@@ -293,7 +304,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
-----criando procedures para consultar por cnpj
+
 DROP PROCEDURE IF EXISTS clientePJ_consultarporcnpj; 
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePJ_consultarporcnpj (
@@ -307,7 +318,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedures para consultar por id 
+
 
 DROP PROCEDURE IF EXISTS clientePJ_consultarporid; 
 DELIMITER $$
@@ -322,7 +333,7 @@ BEGIN
 END $$  
 DELIMITER ; 
 
---consultar por email 
+
 
 DROP PROCEDURE IF EXISTS clientePJ_consultarporemail; 
 DELIMITER $$
@@ -347,7 +358,6 @@ DELIMITER ;
 
 
 
---criando procedures para conta 
 DROP PROCEDURE IF EXISTS conta_criar;
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS conta_criar (
@@ -361,7 +371,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedure para alterar conta
+
 
 DROP PROCEDURE IF EXISTS conta_alterar;
 DELIMITER $$
@@ -378,7 +388,7 @@ BEGIN
 END $$  
 DELIMITER ; 
 
---criando procedure para deletar conta
+
 
 DROP PROCEDURE IF EXISTS conta_deletar;
 DELIMITER $$
@@ -391,7 +401,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedure para consultar conta por id
+
 
 DROP PROCEDURE IF EXISTS conta_consultarporid;
 DELIMITER $$
@@ -404,7 +414,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedure para consultar conta por cliente_id
+
 DROP PROCEDURE IF EXISTS conta_consultarporclienteid;
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS conta_consultarporclienteid (
@@ -416,7 +426,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedure conta-transacao-deposito
+
 
 DROP PROCEDURE IF EXISTS conta_transacao_deposito;
 DELIMITER $$
@@ -431,7 +441,7 @@ BEGIN
 END $$  
 DELIMITER ;
 
---criando procedure conta-transacao-saque
+
 
 DROP PROCEDURE IF EXISTS conta_transacao_saque;
 DELIMITER $$
