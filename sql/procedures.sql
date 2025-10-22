@@ -78,8 +78,7 @@ BEGIN
 
 
    
-   DROP PROCEDURE IF EXISTS clientePF_deletar;
-    DELIMITER $$
+ 
   DROP PROCEDURE IF EXISTS clientePF_deletar;
      DELIMITER $$       
     CREATE PROCEDURE IF NOT EXISTS clientePF_deletar (
