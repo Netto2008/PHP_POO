@@ -4,7 +4,7 @@ DROP PROCEDURE IF EXISTS clientePF_cadastrar;
 
 DELIMITER $$
 
-CREATE PROCEDURE IF NOT EXISTS clientePF_cadastrar (
+CREATE PROCEDURE clientePF_cadastrar (
     IN p_nome VARCHAR(100),
     IN p_email VARCHAR(100),
     IN p_telefone VARCHAR(15),
@@ -15,6 +15,8 @@ CREATE PROCEDURE IF NOT EXISTS clientePF_cadastrar (
     IN p_data_nascimento DATE
 )
 BEGIN
+    DECLARE last_id INT;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -25,10 +27,10 @@ BEGIN
     INSERT INTO Clientes (nome, email, telefone, endereco, username, password)
     VALUES (p_nome, p_email, p_telefone, p_endereco, p_username, p_password);
 
-    SET @last_id = LAST_INSERT_ID();
+    SET last_id = LAST_INSERT_ID();
 
     INSERT INTO Clientes_PF (cliente_id, cpf, data_nascimento)
-    VALUES (@last_id, p_cpf, p_data_nascimento);
+    VALUES (last_id, p_cpf, p_data_nascimento);
 
     COMMIT;
 END $$
@@ -192,7 +194,7 @@ DROP PROCEDURE IF EXISTS clientePJ_cadastrar;
 
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePJ_cadastrar (
-    IN p_id INT ,
+    IN p_id INT,
     IN p_nome VARCHAR(100),
     IN p_email VARCHAR(100),
     IN p_telefone VARCHAR(15),
@@ -210,9 +212,9 @@ BEGIN
     START TRANSACTION;
     INSERT INTO Clientes (nome, email, telefone, endereco, username, password)
     VALUES (p_nome, p_email, p_telefone, p_endereco, p_username, p_password);
-    SET @last_id = LAST_INSERT_ID();
+    SET last_id = LAST_INSERT_ID();
     INSERT INTO Clientes_PJ (cliente_id, cnpj, razao_social)
-    VALUES (@last_id, p_cnpj, p_razao_social);
+    VALUES (last_id, p_cnpj, p_razao_social);
     COMMIT;
 END 
 
