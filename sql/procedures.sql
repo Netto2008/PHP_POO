@@ -194,7 +194,6 @@ DROP PROCEDURE IF EXISTS clientePJ_cadastrar;
 
 DELIMITER $$
 CREATE PROCEDURE IF NOT EXISTS clientePJ_cadastrar (
-    IN p_id INT,
     IN p_nome VARCHAR(100),
     IN p_email VARCHAR(100),
     IN p_telefone VARCHAR(15),
@@ -205,6 +204,8 @@ CREATE PROCEDURE IF NOT EXISTS clientePJ_cadastrar (
     IN p_razao_social VARCHAR(100)
 )
 BEGIN
+    DECLARE last_id INT;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -216,7 +217,7 @@ BEGIN
     INSERT INTO Clientes_PJ (cliente_id, cnpj, razao_social)
     VALUES (last_id, p_cnpj, p_razao_social);
     COMMIT;
-END 
+END $
 
 DELIMITER ;
 
